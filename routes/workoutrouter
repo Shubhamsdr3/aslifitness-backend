@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const workoutList = require('../data/workoutlist')
 const newAddWorkoutData = require('../data/newaddworkout')
+const NewWorkout = require('../data/newworkout');
+const newworkout = require('../data/newworkout');
+const workoutSummary = require('../data/workoutsummary');
+const { summary } = require('../data/workoutsummary');
 
 // get all workouts.
 router.get('/allWorkouts', (req, resp) => {
@@ -10,9 +14,51 @@ router.get('/allWorkouts', (req, resp) => {
 })
 
 // get add workout data
-router.get('/addWorkouts', (req, resp) => {
+router.post('/addWorkout', async function(req, resp) {
+    if(!req.body.userId) {
+        resp.status(400).json({"is_success": false, "message":"userId is not defined."});
+        return
+    }
+    const newWorkoutData = new NewWorkout({
+        userId: req.body.userId,
+        createdAt: req.body.createdAt,
+        setData: req.body.setData
+    })
+    const allWorkouts = req.body.setData
+    console.log("Set count: " + allWorkouts.length)
+    let totalSetCount = 0
+    let totalWtInKg = 0
+    for(let i = 0; i < allWorkouts.length; i++) {
+        let setInfo = allWorkouts[i]
+         totalSetCount = totalSetCount + setInfo.sets.length
+         for(let j = 0; j < setInfo.sets.length; j++) {
+            let setItem = setInfo.sets[j]
+            totalWtInKg = totalWtInKg + setItem.weight_in_kg
+         }
+    }
+    workoutSummary.summary.title = "Total " + totalSetCount + " sets"
+    workoutSummary.summary.sub_title = "Total " + allWorkouts.length + " exercises" 
+    workoutSummary.summary.duration_info.value = "30 mins" // TODO 
+    workoutSummary.summary.volume_info.value = totalWtInKg + " kg"
+    workoutSummary.summary.set_info.value = totalSetCount + ""
+    try {
+        // await newWorkoutData.save();
+        resp.setHeader("Content-Type", "application/json")
+        resp.status(200).json({"is_success": true, "data": workoutSummary})
+    } catch(err) {
+        console.log(err)
+        resp.status(400).json({"success": false, "message":"Error in saving workout"});
+    }
+})
+
+router.get('/summary/:id', async function(req, resp) {
+    if(!req.params.id) {
+        resp.status(400).json({"success": false, "message":"id is not defined."});
+        return
+    }
+    const id = req.params.id
     resp.setHeader("Content-Type", "application/json")
-    resp.status(200).json(newAddWorkoutData)
+    resp.status(200).json({"is_success": true, "data": workoutSummary})
 })
 
 module.exports = router;

@@ -2,34 +2,30 @@ const newAddWorkout = {
 	"status_code": 200,
 	"is_success": true,
 	"data": {
-		"image": "",
-		"header": "Ab Scissors",
-		"sub_header": "",
-		"sets": [
-			{
-				"column1": "SET",
-				"column2": "PREVIOUS",
-				"column3": "REPS",
-				"is_done": false
-			}
-		],
-		"ctas": [
-			{
+		"set_data": {
+			"image": "",
+			"title": "Ab Scissors",
+			"sub_title": "",
+			"sets": [
+				{
+					"weight_in_kg": 20,
+					"reps_count": 10,
+					"is_done": false
+				}
+		    ],
+		    "add_set_cta":{
 			"text": "Add Set",
 			"icon": "",
 			"action": "ADD_WORKOUT"
+			}
 		},
-		{
+		"add_workout_cta": {
 			"text": "Add Exercise",
 			"icon": "",
 			"action": "ADD_EXERCISE"
 		},
-		{
-			"text": "Discard Workout",
-			"icon": "",
-			"action": "DISCARD_WORKOUT"
-		}
-		]
+		"history": null,
+		"cta": null
 	}
 }
 
