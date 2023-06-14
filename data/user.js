@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     profileImage: { type: String },
     weight: { type: Number },
     age: { type: Number },
-    location: { type: {type: String, required: true}, coordinates: [] }
+    location: { type: {type: String}, coordinates: [] }
 }, {collection:'users'});
 
 module.exports = mongoose.model('User', userSchema);

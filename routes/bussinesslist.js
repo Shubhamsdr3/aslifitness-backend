@@ -2,7 +2,7 @@ const express = require('express');
 const vendorRouter = express.Router()
 const User = require('../data/user');
 const axios = require('axios');
-const apiKey = "AIzaSyB-F0uSNWmPFZZqbu8b35P_eHPkd0l6EWc"
+const apiKey = process.env.GOOGLE_MAP_KEY
 
 const NearbyVendors = require('../data/nearbyvendors');
 const e = require('express');

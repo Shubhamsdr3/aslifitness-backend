@@ -5,7 +5,6 @@ const newAddWorkoutData = require('../data/newaddworkout')
 const NewWorkout = require('../data/newworkout');
 const newworkout = require('../data/newworkout');
 const workoutSummary = require('../data/workoutsummary');
-const { summary } = require('../data/workoutsummary');
 
 // get all workouts.
 router.get('/allWorkouts', (req, resp) => {
@@ -38,11 +37,11 @@ router.post('/addWorkout', async function(req, resp) {
     }
     workoutSummary.summary.title = "Total " + totalSetCount + " sets"
     workoutSummary.summary.sub_title = "Total " + allWorkouts.length + " exercises" 
-    workoutSummary.summary.duration_info.value = "30 mins" // TODO 
+    workoutSummary.summary.duration_info.value = req.body.duration
     workoutSummary.summary.volume_info.value = totalWtInKg + " kg"
     workoutSummary.summary.set_info.value = totalSetCount + ""
     try {
-        // await newWorkoutData.save();
+        await newWorkoutData.save();
         resp.setHeader("Content-Type", "application/json")
         resp.status(200).json({"is_success": true, "data": workoutSummary})
     } catch(err) {

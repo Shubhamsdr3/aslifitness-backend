@@ -4,17 +4,85 @@ const User = require('../data/user')
 const profileData = require('../data/userprofile')
 
 // register
-router.post('/register', (req, resp) => {
-    // register things goes here.
+router.post('/register', async function(req, res) {
+    try {
+        const { first_name, last_name, email, password } = req.body;
+        if (!(email && password && first_name && last_name)) {
+            res.status(400).send("All input is required");
+        }
+
+        // check if user already exist
+        // Validate if user exist in our database
+        const oldUser = await User.findOne({ email });
+
+        if (oldUser) {
+            return res.status(409).send("User Already Exist. Please Login");
+        }
+
+        //Encrypt user password
+        encryptedPassword = await bcrypt.hash(password, 10);
+
+        // Create user in our database
+        const user = await User.create({
+            first_name,
+            last_name,
+            email: email.toLowerCase(), 
+            password: encryptedPassword,
+        });
+
+        const token = jwt.sign(
+            { user_id: user._id, email },
+            process.env.TOKEN_KEY,
+        {
+            expiresIn: "2h",
+        });
+        user.token = token;
+        res.status(201).json(user);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 // login
-router.post('/login', (req, res) => {
-    // login
+router.post('/login', async function(req, res) {
+    // Our login logic starts here
+  try {
+    // Get user input
+    const { email, password } = req.body;
+
+    // Validate user input
+    if (!(email && password)) {
+      res.status(400).send("All input is required");
+    }
+    // Validate if user exist in our database
+    const user = await User.findOne({ email });
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+      // Create token
+      const token = jwt.sign(
+        { user_id: user._id, email },
+        process.env.TOKEN_KEY,
+        {
+          expiresIn: "2h",
+        }
+      );
+
+      // save user token
+      user.token = token;
+
+      // user
+      res.status(200).json(user);
+    }
+    res.status(400).send("Invalid Credentials");
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 // get profile data
-router.get('/profile', (req, resp) => {
+router.get('/:userId/profile', (req, resp) => {
+    const userId = req.params.userId
+    console.log("UserId: " + this.userId)
     resp.setHeader("Content-Type", "application/json");
     resp.status(200).json(profileData)
 })
@@ -43,6 +111,7 @@ router.get('/:userId', async function(req, res) {
 
 //save user
 router.post('/save', async function(req, res){
+    console.log("User details: " + req.body)
     const user = new User({
         userId: req.body.userId,
         name: req.body.name,

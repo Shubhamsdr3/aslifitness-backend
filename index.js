@@ -1,3 +1,4 @@
+require("dotenv").config()
 const express = require('express');
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
@@ -30,7 +31,7 @@ const userRoutine = require('./routes/routinerouter')
 app.use('/api', userRoutine)
 
 //Connecting to DB
-mongoose.connect('mongodb://localhost:27017/aslifitness', {
+mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     serverSelectionTimeoutMS: 1000,
     useUnifiedTopology: true,
@@ -45,4 +46,4 @@ mongoose.connect('mongodb://localhost:27017/aslifitness', {
     } 
 );
 
-app.listen(3000, () => console.log('Listening on Port 3000'));
+app.listen(process.env.PORT, () => console.log('Listening on Port 3000'));
