@@ -1,5 +1,5 @@
 const { credential } = require('firebase-admin');
-const serviceAccount = require('/Users/shubhampandey/Downloads/fitracker-2b597-firebase-adminsdk-xgvn7-a07e96f3c2.json')
+const serviceAccount = require('../service_account.json')
 
 const admin = require('firebase-admin');
 admin.initializeApp({
