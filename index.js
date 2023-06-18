@@ -6,7 +6,7 @@ const app = express();
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.json());
 
-const userRouter = require('./routes/userrouter')
+const userRouter = require('./routes/fbuserrouter')
 app.use('/api/user', userRouter);
 
 const userProfile = require('./routes/workoutrouter')

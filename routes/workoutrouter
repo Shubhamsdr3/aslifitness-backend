@@ -5,6 +5,8 @@ const newAddWorkoutData = require('../data/newaddworkout')
 const NewWorkout = require('../data/newworkout');
 const newworkout = require('../data/newworkout');
 const workoutSummary = require('../data/workoutsummary');
+const firestoreDB = require('../fcm/init');
+const workoutCollection = firestoreDB.collection("workouts")
 
 // get all workouts.
 router.get('/allWorkouts', (req, resp) => {
@@ -18,11 +20,11 @@ router.post('/addWorkout', async function(req, resp) {
         resp.status(400).json({"is_success": false, "message":"userId is not defined."});
         return
     }
-    const newWorkoutData = new NewWorkout({
+    const newWorkoutData = {
         userId: req.body.userId,
         createdAt: req.body.createdAt,
         setData: req.body.setData
-    })
+    }
     const allWorkouts = req.body.setData
     console.log("Set count: " + allWorkouts.length)
     let totalSetCount = 0
@@ -41,9 +43,10 @@ router.post('/addWorkout', async function(req, resp) {
     workoutSummary.summary.volume_info.value = totalWtInKg + " kg"
     workoutSummary.summary.set_info.value = totalSetCount + ""
     try {
-        await newWorkoutData.save();
+        // await newWorkoutData.save();
         resp.setHeader("Content-Type", "application/json")
-        resp.status(200).json({"is_success": true, "data": workoutSummary})
+        const response = await workoutCollection.add(workoutSummary)
+        resp.status(400).json({"success": true, "data": response});
     } catch(err) {
         console.log(err)
         resp.status(400).json({"success": false, "message":"Error in saving workout"});
@@ -51,6 +54,7 @@ router.post('/addWorkout', async function(req, resp) {
 })
 
 router.get('/summary/:id', async function(req, resp) {
+    console.log("Serving request for id: " + req.params.id)
     if(!req.params.id) {
         resp.status(400).json({"success": false, "message":"id is not defined."});
         return

@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/firestore": "^6.6.1",
     "@googlemaps/google-maps-services-js": "^3.3.27",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
