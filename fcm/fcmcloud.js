@@ -1,4 +1,4 @@
-const firebaseAdmin = require('../fcm/init')
+const admin = require('firebase-admin');
 
 const sendNotification = (notificationData, successCallback, erorrCallback) => {
   console.log("FCM token: " + notificationData.token)
@@ -8,7 +8,7 @@ const sendNotification = (notificationData, successCallback, erorrCallback) => {
   };
 
   // Send message to device with provided registration token
-  firebaseAdmin.messaging().send(message)
+  admin.messaging().send(message)
     .then((response) => {
       console.log("Notification message Id: " + response)
       successCallback(response)

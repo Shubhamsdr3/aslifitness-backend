@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const workoutList = require('../data/workoutlist')
-const newAddWorkoutData = require('../data/newaddworkout')
-const NewWorkout = require('../data/newworkout');
-const newworkout = require('../data/newworkout');
 const workoutSummary = require('../data/workoutsummary');
 const firestoreDB = require('../fcm/init');
 const workoutCollection = firestoreDB.collection("workouts")
@@ -46,7 +43,10 @@ router.post('/addWorkout', async function(req, resp) {
         // await newWorkoutData.save();
         resp.setHeader("Content-Type", "application/json")
         const response = await workoutCollection.add(workoutSummary)
-        resp.status(400).json({"success": true, "data": response});
+        response.get().then(snapShot => {
+            console.log(snapShot.data())
+            resp.status(200).json({"success": true, "data": snapShot.data()});
+        })
     } catch(err) {
         console.log(err)
         resp.status(400).json({"success": false, "message":"Error in saving workout"});
