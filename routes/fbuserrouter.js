@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router()
 const User = require('../data/user')
 const profileData = require('../data/userprofile')
-const firestoreDB = require('../fcm/init');
+const firestoreDB = require('../init');
 
 const userCollection = firestoreDB.collection("users")
 

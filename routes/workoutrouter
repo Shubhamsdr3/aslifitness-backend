@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const workoutList = require('../data/workoutlist')
 const workoutSummary = require('../data/workoutsummary');
-const firestoreDB = require('../fcm/init');
+const firestoreDB = require('../init');
 const workoutCollection = firestoreDB.collection("workouts")
 
 // get all workouts.
