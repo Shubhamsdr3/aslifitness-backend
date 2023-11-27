@@ -8,6 +8,7 @@ const sendNotification = (notificationData, successCallback, erorrCallback) => {
   };
 
   // Send message to device with provided registration token
+  console.log("Sending message: " + JSON.stringify(message))
   admin.messaging().send(message)
     .then((response) => {
       console.log("Notification message Id: " + response)

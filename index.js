@@ -30,6 +30,10 @@ app.use('/api', vendorRouter)
 const userRoutine = require('./routes/routinerouter')
 app.use('/api', userRoutine)
 
+// fitness quotes
+const fitnessQuotes = require('./routes/fitnessquotes')
+app.use('/api', fitnessQuotes)
+
 //Connecting to DB
 mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,

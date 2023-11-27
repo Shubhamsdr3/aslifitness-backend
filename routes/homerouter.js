@@ -6,7 +6,7 @@ const { model } = require('mongoose');
 
 // get home data.
 router.get('/home', (req, resp) => {
-    resp.setHeader("Content-Type", "application/json");
+    resp.setHeader("Content-Type", "application/json");  
     resp.status(200).json(homeData)
 })
 

@@ -83,9 +83,12 @@ router.post('/login', async function(req, res) {
 });
 
 // get profile data
-router.get('/:userId/profile', (req, resp) => {
+router.get('/:userId/profile', async function(req, resp) {
     const userId = req.params.userId
-    console.log("UserId: " + this.userId)
+    console.log("UserId: " + userId)
+     const responseUser = await userCollection.doc(userId).get()
+     console.log(responseUser.data())
+    profileData.data.profile = responseUser.data()
     resp.setHeader("Content-Type", "application/json");
     resp.status(200).json(profileData)
 })
@@ -106,6 +109,7 @@ router.get('/:userId', async function(req, res) {
         const userId = req.params.userId;
         const userDoc = await userCollection.doc(userId).get()
         console.log(userDoc.data())
+        res.setHeader("Content-Type", "application/json");
         res.status(200).json(userDoc.data());
     } catch(err) {
         console.log(err);
@@ -115,8 +119,9 @@ router.get('/:userId', async function(req, res) {
 
 //save user
 router.post('/save', async function(req, res) {
-    console.log("User details: " + req.body)
+    console.log("Savinng user details: " + req.body.id)
     const user = {
+        "id": req.body.id,
         "userId": req.body.userId,
         "name": req.body.name,
         "phoneNumber": req.body.phoneNumber,
@@ -126,10 +131,36 @@ router.post('/save', async function(req, res) {
     };
     try {
         // await user.save();
-        firestoreDB.collection("users").add(user);
+        firestoreDB.collection("users").doc(req.body.id).set(user);
         res.status(200).json({"success": true, "message":"User details saved"});
     } catch (err) {
         console.log(err);
+        res.status(400).json({"success": false, "message":"Error in saving user details"});
+    }
+});
+
+// updated user 
+router.post('/update', async function(req, res) {
+    console.log("Updating user details: " + req.body.id)
+    try {
+        const userDoc = await firestoreDB.collection("users").doc(req.body.id).get();
+        console.log("Updating doc: " + userDoc)
+            userDoc.ref.set({
+                "userId": req.body.userId,
+                "name": req.body.name,
+                "phoneNumber": req.body.phoneNumber,
+                "profileImage": req.body.profileImage,
+                "email": req.body.email,
+                "weight": req.body.weight,
+                "age": req.body.age
+            }, {merge: true})  
+        
+        res.setHeader("Content-Type", "application/json");
+        const responseUser = await userCollection.doc(req.body.id).get()
+        console.log(responseUser.data())
+        res.status(200).json({"success": true, "data": responseUser.data()});
+    } catch(err) {
+        console.log(err)   
         res.status(400).json({"success": false, "message":"Error in saving user details"});
     }
 });

@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router()
 const userRoutine = require('../data/routine');
-const { model } = require('mongoose');
 const sendNotification = require('../fcm/fcmcloud')
 const notification = require('../data/notification')
 
@@ -28,6 +27,7 @@ router.post('/:userId/routine/reminder', async function(req, resp) {
         notification.title = req.body.title
         notification.message = req.body.message
         notification.deeplinkUrl = req.body.deeplinkUrl,
+        notification.isScheduled = req.body.isScheduled,
         notification.scheduledTime = req.body.scheduledTime
         sendNotification(notification, function success(messageId) {
             resp.status(200).json({"is_success": true, "data": {"message": "Notification send succesfully", "messageId": messageId}})
