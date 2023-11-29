@@ -1,6 +1,7 @@
 const express = require('express');
 const vendorRouter = express.Router()
 const axios = require('axios');
+const e = require('express');
 
 vendorRouter.get('/fitness-quotes', async function(req, res){
     try {
@@ -12,7 +13,7 @@ vendorRouter.get('/fitness-quotes', async function(req, res){
             }
         })
         .then(response => {
-            console.log(response)
+            console.log(response.data)
             res.status(200).json({"is_success": true, "data": response.data})
         })
         .catch(error => {
@@ -20,7 +21,7 @@ vendorRouter.get('/fitness-quotes', async function(req, res){
             res.status(200).json({"is_success": false, "message": error.message})
         })
     } catch(err) {
-        console.log()
+        console.log(err)
         res.status(200).json({"is_success": false, "message": err.message})
     }
 })

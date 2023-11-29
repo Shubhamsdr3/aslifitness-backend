@@ -144,7 +144,7 @@ router.post('/update', async function(req, res) {
     console.log("Updating user details: " + req.body.id)
     try {
         const userDoc = await firestoreDB.collection("users").doc(req.body.id).get();
-        console.log("Updating doc: " + userDoc)
+        console.log("Updating doc: " + userDoc.data())
             userDoc.ref.set({
                 "userId": req.body.userId,
                 "name": req.body.name,
@@ -153,7 +153,7 @@ router.post('/update', async function(req, res) {
                 "email": req.body.email,
                 "weight": req.body.weight,
                 "age": req.body.age
-            }, {merge: true})  
+            }, { merge: true })  
         
         res.setHeader("Content-Type", "application/json");
         const responseUser = await userCollection.doc(req.body.id).get()

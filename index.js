@@ -40,8 +40,7 @@ mongoose.connect(process.env.MONGO_URL, {
     serverSelectionTimeoutMS: 1000,
     useUnifiedTopology: true,
     useCreateIndex: true
-  },
-    function (err, res) {
+  }, function (err, res) {
         try {
             console.log('Connected to Database');
         } catch (err) {
