@@ -13,14 +13,10 @@ router.get('/allWorkouts', (req, resp) => {
 
 // get add workout data
 router.post('/addWorkout', async function(req, resp) {
+    console.log("Adding workout...")
     if(!req.body.userId) {
         resp.status(400).json({"is_success": false, "message":"userId is not defined."});
         return
-    }
-    const newWorkoutData = {
-        userId: req.body.userId,
-        createdAt: req.body.createdAt,
-        setData: req.body.setData
     }
     const allWorkouts = req.body.setData
     console.log("Set count: " + allWorkouts.length)
@@ -44,8 +40,9 @@ router.post('/addWorkout', async function(req, resp) {
         resp.setHeader("Content-Type", "application/json")
         const response = await workoutCollection.add(workoutSummary)
         response.get().then(snapShot => {
-            console.log(snapShot.data())
-            resp.status(200).json({"success": true, "data": snapShot.data()});
+            let responseData = {"workoutId": snapShot.id, "data": snapShot.data()}
+            console.log(responseData.data)
+            resp.status(200).json({"success": true, "data": responseData});
         })
     } catch(err) {
         console.log(err)
@@ -53,6 +50,7 @@ router.post('/addWorkout', async function(req, resp) {
     }
 })
 
+// get workout summary.
 router.get('/summary/:id', async function(req, resp) {
     console.log("Serving request for id: " + req.params.id)
     if(!req.params.id) {

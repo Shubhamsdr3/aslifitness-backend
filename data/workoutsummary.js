@@ -1,5 +1,4 @@
 const workoutSummary = {
-        "id": "1fwefghbnverger",
 		"header": "Nice Work!",
 		"sub_header": "Today at 7 pm",
 		"summary": {

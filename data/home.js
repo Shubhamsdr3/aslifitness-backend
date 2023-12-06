@@ -2,7 +2,7 @@ const homeData = {
 	"status_code": 200,
 	"is_success": true,
 	"data": {
-		"header": "Welcome, Shubham!",
+		"header": "Greeting!",
 		"sub_header": "Monday, 24-07-2022",
 		"quotes": [
 			  {
@@ -13,9 +13,9 @@ const homeData = {
 		],
 		"user": {
 			"name": "Shubham Pandey",
-			"profile_image": "https://cdn1.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/exercise-circle-blue-512.png",
-			"phone_number": "8881585678",
-			"user_id": ""
+			"profileImage": "https://cdn1.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/exercise-circle-blue-512.png",
+			"phoneNumber": "8881585678",
+			"userId": ""
 		},
 
 		"items": [
