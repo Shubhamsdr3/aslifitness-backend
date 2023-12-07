@@ -1,4 +1,4 @@
-const userRoutine = {
+const userRoutineWeekly = {
 	"status_code": 200,
 	"is_success": true,
 	"data": {
@@ -6,7 +6,7 @@ const userRoutine = {
 		"sub_header": "",
 		"total_page": 12,
 		"current_page": 2,
-		"current_month": {
+		"currentMonth": {
 			"month": 2,
 			"year": 2023,
 			"routines": [
@@ -180,4 +180,4 @@ const userRoutine = {
 }
 }
 // month 0 -> Jan...Dec-11
-module.exports = userRoutine
+module.exports = userRoutineWeekly

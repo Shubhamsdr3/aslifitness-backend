@@ -13,7 +13,7 @@ const weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","S
 router.get('/home', async function(req, resp) {
    resp.setHeader("Content-Type", "application/json");  
    let userId = req.query.uid
-   console.log("UserId:" + userId)
+   console.log("UserId: " + userId)
    if(!userId || userId.trim().length == 0) {
       resp.status(200).json(homeData)
    } else {
